@@ -1,20 +1,18 @@
-# Use official Node.js image to build the Angular app
-FROM node:18 AS build
+FROM node:18 as build
 
+WORKDIR /app
 
-ARG GITHUB_TOKEN
-RUN git clone https://${GITHUB_TOKEN}@github.com/coSK123/paper-registration.git /app
-
-# Setze das Arbeitsverzeichnis
-WORKDIR /app/Frontend/paper-registration
-
-# Installiere die Abhängigkeiten
+COPY package*.json ./
+RUN npm install -g @angular/cli
 RUN npm install
 
-# Baue die Angular-App für die Produktion
-RUN npm run build --prod
+COPY . .
 
-# Verwende Nginx, um die gebaute Angular-App zu servieren
+RUN ng build
+
 FROM nginx:alpine
-COPY --from=build /app/Frontend/paper-registration/dist/paper-registration /usr/share/nginx/html
+COPY --from=build /app/dist/[paper-registration] /usr/share/nginx/html
+
 EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
