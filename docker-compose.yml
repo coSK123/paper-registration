@@ -3,9 +3,9 @@
 services:
   frontend:
     build:
-      context: ./Frontend/paper-registration
+      context: ./Frontend
     ports:
-      - "4200:80"   
+      - "4100:80"   
     depends_on:
       - backend
     networks:
