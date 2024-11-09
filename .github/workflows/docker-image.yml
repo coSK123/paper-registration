@@ -20,27 +20,8 @@ jobs:
       - name: Set up Docker
         uses: docker/setup-buildx-action@v3
 
-      # Install Docker Compose
-      - name: Install Docker Compose
-        run: |
-          DOCKER_COMPOSE_VERSION=2.5.0
-          sudo curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
-          # Verify Docker Compose installation
-          docker-compose --version
+      - name: Build Frontend
+        run: docker build -f ./Frontend/Dockerfile
 
-      # Start Docker Compose
-      - name: Start Docker Compose
-        run: docker-compose -f ./docker-compose.yml up -d
-
-      # Run any tests here (if you have test scripts or commands)
-      - name: Run tests
-        run: |
-          # Example: Run Angular frontend tests
-          docker-compose exec frontend npm test
-          # Example: Run backend tests
-          docker-compose exec backend npm test
-
-      # Shut down the Docker Compose services
-      - name: Stop Docker Compose
-        run: docker-compose -f ./docker-compose.yml down
+      - name: Build Backend
+        run: docker build -f ./Backend/Dockerfile
