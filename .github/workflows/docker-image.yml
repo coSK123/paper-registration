@@ -20,8 +20,10 @@ jobs:
       - name: Set up Docker
         uses: docker/setup-buildx-action@v3
 
+      # Build Frontend
       - name: Build Frontend
-        run: docker build -f ./Frontend/Dockerfile
+        run: docker build -f ./Frontend/Dockerfile -t frontend-image:latest ./Frontend
 
+      # Build Backend
       - name: Build Backend
-        run: docker build -f ./Backend/Dockerfile
+        run: docker build -f ./Backend/Dockerfile -t backend-image:latest ./Backend
