@@ -1,0 +1,32 @@
+name: Build and Test Docker Compose
+
+# Trigger on push and pull request to main branch
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
+      - name: Start Docker
+        run: docker-compose -f ./docker-compose.yml up
+
+      # Run any tests here (if you have test scripts or commands)
+      - name: Run tests
+        run: |
+          # Example: Run Angular frontend tests
+          docker-compose exec frontend npm test
+          # Example: Run backend tests
+          docker-compose exec backend npm test
+
+      # Shut down the Docker Compose services
+      - name: Stop Docker Compose
+        run: docker-compose -f ./docker-compose.yml down
