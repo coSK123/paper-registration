@@ -4,11 +4,13 @@ const port = 3000
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:4100',  // or use '*' to allow all origins in development
+  origin: ['http://localhost:4200', 'http://localhost:4100'],  // or use '*' to allow all origins in development
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
+app.use(express.json())
 
+app.use('/register', require('./routes/register.ts'))
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
