@@ -11,6 +11,8 @@ app.use(cors({
 app.use(express.json())
 
 app.use('/register', require('./routes/register.ts'))
+app.use('/auth', require('./routes/auth.ts'))
+
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
