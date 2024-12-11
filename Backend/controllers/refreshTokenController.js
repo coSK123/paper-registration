@@ -1,45 +1,31 @@
-const usersDB = {
-  users: require("../model/users.json"),
-  setUsers: function (data) {
-    this.users = data;
-  },
-};
+import jwt from 'jsonwebtoken';
+import User from '../model/user.js';
+import dotenv from 'dotenv';
 
-const jwt = require("jsonwebtoken");
-require("dotenv").config();
+dotenv.config();
 
-const handleRefreshToken = (req, res) => {
+export const handleRefreshToken = async (req, res) => {
   const cookies = req.cookies;
+  console.log(cookies);
   if (!cookies?.jwt) return res.sendStatus(401);
-  console.log("Received refresh token:", cookies.jwt);
   const refreshToken = cookies.jwt;
 
-  // Log all users and their refresh tokens for debugging
-  usersDB.users.forEach(user => {
-    console.log(`User: ${user.username}, Refresh Token: ${user.refreshToken}`);
-  });
+  try {
+    const foundUser = await User.findOne({ where: { refreshToken } });
+    if (!foundUser) return res.sendStatus(403);
 
-  const foundUser = usersDB.users.find(
-    (person) => person.refreshToken === refreshToken
-  );
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
+      if (err || foundUser.username !== decoded.username) return res.sendStatus(403);
 
-  console.log("Found user:", foundUser);
-  if (!foundUser) return res.sendStatus(403);
+      const accessToken = jwt.sign(
+        { "username": foundUser.username },
+        process.env.ACCESS_TOKEN_SECRET,
+        { expiresIn: '15m' }
+      );
 
-  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
-    if (err || foundUser.username !== decoded.username) {
-      console.log("Token verification failed:", err);
-      return res.sendStatus(403);
-    }
-
-    const accessToken = jwt.sign(
-      { username: foundUser.username },
-      process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "15m" }
-    );
-
-    res.json({ accessToken });
-  });
+      res.json({ accessToken });
+    });
+  } catch (err) {
+    res.status(500).json({ 'message': err.message });
+  }
 };
-
-module.exports = { handleRefreshToken };

@@ -1,47 +1,40 @@
-const usersDB = {
-    users: require('../model/users.json'),
-    setUsers: function (data) {this.users = data}
-}
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import User from '../model/user.js';
+import dotenv from 'dotenv';
 
-const bcrypt = require('bcrypt')
+dotenv.config();
 
-const jwt = require( 'jsonwebtoken')
-require('dotenv').config();
-const fs = require('fs');
-const path = require('path');
+export const handleLogin = async (req, res) => {
+  const { user, password } = req.body;
+  if (!user || !password) return res.status(400).json({ 'message': 'Username and Password are required' });
 
+  try {
+    const foundUser = await User.findOne({ where: { username: user } });
+    if (!foundUser) return res.sendStatus(401);
 
-
-const handleLogin = async (req, res)=> {
-    const {user, password} = req.body;
-    if (!user || !password)
-        return res.status(400).json({'message': 'Username and Password are required'})
-    const foundUser = usersDB.users.find(person => person.username === user)
-    if(!foundUser) return res.sendStatus(401);
-    const match = await bcrypt.compare(password, foundUser.password)
+    const match = await bcrypt.compare(password, foundUser.password);
     if (match) {
-        const accessToken = jwt.sign(
-            { "username": foundUser.username},
-            process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: '15m' }
-        );
-        const refreshToken = jwt.sign(
-            { "username": foundUser.username},
-            process.env.REFRESH_TOKEN_SECRET,
-            { expiresIn: '1d' }
-        );
-        const otherUsers = usersDB.users.filter(person => person.username !== foundUser.username)
-        const currentUser = {...foundUser, refreshToken}
-        usersDB.setUsers([...otherUsers, currentUser]);
-        await fs.promises.writeFile(
-            path.join(__dirname, '../model/users.json'), JSON.stringify(usersDB.users))
-        const oneDay = 24*60*60*1000
-        res.cookie('jwt', refreshToken, {httpOnly: true, maxAge: oneDay})
-        return res.status(200).json({accessToken})
-    }
-    else {
-        res.sendStatus(401);
-    }
-}
+      const accessToken = jwt.sign(
+        { "username": foundUser.username },
+        process.env.ACCESS_TOKEN_SECRET,
+        { expiresIn: '30m' }
+      );
+      const refreshToken = jwt.sign(
+        { "username": foundUser.username },
+        process.env.REFRESH_TOKEN_SECRET,
+        { expiresIn: '1d' }
+      );
 
-module.exports = { handleLogin };
+      foundUser.refreshToken = refreshToken;
+      await foundUser.save();
+      console.log('User: ', foundUser);
+      res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
+      res.json({ accessToken });
+    } else {
+      res.sendStatus(401);
+    }
+  } catch (err) {
+    res.status(500).json({ 'message': err.message });
+  }
+};
