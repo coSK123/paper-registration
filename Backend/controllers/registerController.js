@@ -2,8 +2,8 @@ const usersDB = {
     users: require('../model/users.json'),
     setUsers: function (data) {this.users = data}
 }
-const fsPromises = require('fs').promises;
-const path = require('path')
+const fs = require('fs');
+const path = require('path');
 const bcrypt = require('bcrypt')
 
 const handleNewUser = async (req, res)=> {
@@ -17,7 +17,7 @@ const handleNewUser = async (req, res)=> {
             const hashedPassword = await bcrypt.hash(password, 10);
             const newUser = {'username': user, "password": hashedPassword}
             usersDB.setUsers([...usersDB.users, newUser])
-            await fsPromises.writeFile(
+            await fs.promises.writeFile(
                 path.join(__dirname, '..', 'model', 'users.json'),
                 JSON.stringify(usersDB.users)
             )
