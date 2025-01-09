@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './frontpage.component.html',
-  styleUrl: './frontpage.component.css'
+  styleUrl: './frontpage.component.scss'
 })
 export class FrontpageComponent {
 

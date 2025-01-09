@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [], // Add HttpClientModule to imports
   templateUrl: './button.component.html',
-  styleUrls: ['./button.component.css'],
+  styleUrls: ['./button.component.scss'],
  
 })
 export class ButtonComponent {
