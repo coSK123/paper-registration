@@ -1,0 +1,62 @@
+<form [formGroup]="addressForm" novalidate (ngSubmit)="onSubmit()">
+  <mat-card class="shipping-card">
+    <mat-card-header>
+      <mat-card-title>Daten des neuen Nutzers</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="First name" formControlName="firstName">
+            @if (addressForm.controls['firstName'].hasError('required')) {
+              <mat-error>First name is <strong>required</strong></mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Last name" formControlName="lastName">
+            @if (addressForm.controls['lastName'].hasError('required')) {
+              <mat-error>Last name is <strong>required</strong></mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Email" formControlName="email">
+            @if (addressForm.controls['email'].hasError('required')) {
+              <mat-error>Email is <strong>required</strong></mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Password" formControlName="password">
+            @if (addressForm.controls['password'].hasError('required')) {
+              <mat-error>Password is <strong>required</strong></mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-radio-group formControlName="role">
+            <mat-radio-button value="Administrator">Administrator</mat-radio-button>
+            <mat-radio-button value="Dozent">Dozent</mat-radio-button>
+            <mat-radio-button value="Student">Student</mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <mat-dialog-actions>
+        <button mat-raised-button mat-dialog-close color="warn">Cancel</button>
+        <button mat-raised-button color="primary" type="button" (click)="onSubmit()">
+          Submit
+        </button>
+      </mat-dialog-actions>
+    </mat-card-actions>
+  </mat-card>
+</form>

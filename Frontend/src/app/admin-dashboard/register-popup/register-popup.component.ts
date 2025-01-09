@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
-import { RegisterPopupContentComponent } from './register-popup-content/register-popup-content.component';
+import { RegisterNewUserComponent } from './register-new-user/register-new-user.component';
 
 
 @Component({
@@ -15,11 +15,7 @@ export class RegisterPopupComponent {
   readonly dialog = inject(MatDialog);
 
   openDialog() {
-    const dialogRef = this.dialog.open(RegisterPopupContentComponent);
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
+    this.dialog.open(RegisterNewUserComponent);
   }
 }
 
