@@ -7,6 +7,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { RegisterService, User } from '../../../services/registerService/register.service';
 
 
 @Component({
@@ -35,13 +36,15 @@ export class RegisterNewUserComponent {
     role: [null, Validators.required],
   });
 
-  constructor(private dialogRef: MatDialogRef<RegisterNewUserComponent>) {}
+  constructor(private dialogRef: MatDialogRef<RegisterNewUserComponent>, private registrationService: RegisterService) {}
 
   onSubmit(): void {
     if (this.addressForm.valid) {
-      console.log(this.addressForm.value);
-      console.log('User registered');
-      this.dialogRef.close();
+      if(this.addressForm.value.firstName && this .addressForm.value.lastName && this.addressForm.value.email && this.addressForm.value.password && this.addressForm.value.role){
+       const newUser:  User = {firstname: this.addressForm.value.firstName, lastname: this.addressForm.value.lastName, email: this.addressForm.value.email, password: this.addressForm.value.password, role: this.addressForm.value.role};
+       this.registrationService.register(newUser);
+       this.dialogRef.close();
+      }
     } else {
       // Show errors or prevent closing
     }
