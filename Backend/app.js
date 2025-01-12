@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import sequelize from './database.js';
+import { sequelize, connectWithRetry } from './database.js';
 import verifyJWT from './middleware/verifyJWT.js';
 import registerRoutes from './routes/register.js';
 import authRoutes from './routes/auth.js';
@@ -14,7 +14,7 @@ import getUsersRoutes from './routes/getUsers.js';
 const app = express();
 const port = 3000;
 
-app.use(cors(corsOptions))
+app.use(cors(corsOptions));
 app.use(credentials);
 app.use(express.json());
 app.use(cookieParser());
@@ -26,7 +26,6 @@ app.use('/logout', logoutRoutes);
 app.use('/users', getUsersRoutes);
 app.use(verifyJWT);
 
-
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
@@ -35,10 +34,13 @@ app.get('/test', (req, res) => {
   res.send('test');
 });
 
-sequelize.sync().then(() => {
-  app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-  });
-}).catch(err => {
-  console.error('Unable to sync database:', err);
-});
+const startServer = async () => {
+  await connectWithRetry();
+  if (sequelize) {
+    app.listen(port, () => {
+      console.log(`Server running on port ${port}`);
+    });
+  }
+};
+
+startServer();
