@@ -29,8 +29,8 @@ export class RegisterNewUserComponent {
   private fb = inject(FormBuilder);
   addressForm = this.fb.group({
 
-    firstName: [null, Validators.required],
-    lastName: [null, Validators.required],
+    firstname: [null, Validators.required],
+    lastname: [null, Validators.required],
     email: [null, Validators.required],
     password: [null, Validators.required],
     role: [null, Validators.required],
@@ -40,8 +40,8 @@ export class RegisterNewUserComponent {
 
   onSubmit(): void {
     if (this.addressForm.valid) {
-      if(this.addressForm.value.firstName && this .addressForm.value.lastName && this.addressForm.value.email && this.addressForm.value.password && this.addressForm.value.role){
-       const newUser:  User = {firstname: this.addressForm.value.firstName, lastname: this.addressForm.value.lastName, email: this.addressForm.value.email, password: this.addressForm.value.password, role: this.addressForm.value.role};
+      if(this.addressForm.value.firstname && this .addressForm.value.lastname && this.addressForm.value.email && this.addressForm.value.password && this.addressForm.value.role){
+       const newUser:  User = {firstname: this.addressForm.value.firstname, lastname: this.addressForm.value.lastname, email: this.addressForm.value.email, password: this.addressForm.value.password, role: this.addressForm.value.role};
        this.registrationService.register(newUser);
        this.dialogRef.close();
       }

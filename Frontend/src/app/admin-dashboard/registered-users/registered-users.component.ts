@@ -3,6 +3,7 @@ import { MatTableModule, MatTable } from '@angular/material/table';
 import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
 import { MatSortModule, MatSort } from '@angular/material/sort';
 import { RegisteredUsersDataSource, RegisteredUsersItem } from './registered-users-datasource';
+import { GetUsersFromDatabaseService } from '../../services/get-users-from-database.service';
 
 @Component({
   selector: 'app-registered-users',
@@ -12,13 +13,17 @@ import { RegisteredUsersDataSource, RegisteredUsersItem } from './registered-use
   imports: [MatTableModule, MatPaginatorModule, MatSortModule]
 })
 export class RegisteredUsersComponent implements AfterViewInit {
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<RegisteredUsersItem>;
-  dataSource = new RegisteredUsersDataSource();
+  dataSource: RegisteredUsersDataSource;
 
-  /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id', 'last_name', 'first_name', 'role'];
+  constructor(private getUserService: GetUsersFromDatabaseService) {
+    this.dataSource = new RegisteredUsersDataSource(this.getUserService);
+  }
+
+  displayedColumns = ['email', 'firstname', 'lastname', 'role'];
 
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;

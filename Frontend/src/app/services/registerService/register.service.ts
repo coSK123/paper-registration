@@ -21,6 +21,7 @@ export class RegisterService {
 
 
   register(newUser: User) {
+    console.log(newUser);
     this.http.post('http://localhost:3000/register', {"firstname":newUser.firstname,
                                                       "lastname":newUser.lastname,
                                                       "email": newUser.email,

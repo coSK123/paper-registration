@@ -9,6 +9,7 @@ import refreshRoutes from './routes/refresh.js';
 import logoutRoutes from './routes/logout.js';
 import corsOptions from './config/corsOptions.js';
 import credentials from './middleware/credentials.js';
+import getUsersRoutes from './routes/getUsers.js';
 
 const app = express();
 const port = 3000;
@@ -22,7 +23,9 @@ app.use('/register', registerRoutes);
 app.use('/auth', authRoutes);
 app.use('/refresh', refreshRoutes);
 app.use('/logout', logoutRoutes);
+app.use('/users', getUsersRoutes);
 app.use(verifyJWT);
+
 
 app.get('/', (req, res) => {
   res.send('Hello World!');

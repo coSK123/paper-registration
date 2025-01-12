@@ -6,22 +6,22 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const handleLogin = async (req, res) => {
-  const { user, password } = req.body;
-  if (!user || !password) return res.status(400).json({ 'message': 'Username and Password are required' });
+  const { email, password } = req.body;
+  if (!email || !password) return res.status(400).json({ 'message': 'Email and Password are required' });
 
   try {
-    const foundUser = await User.findOne({ where: { username: user } });
+    const foundUser = await User.findOne({ where: { email: email } });
     if (!foundUser) return res.sendStatus(401);
 
     const match = await bcrypt.compare(password, foundUser.password);
     if (match) {
       const accessToken = jwt.sign(
-        { "username": foundUser.username },
+        { "email": foundUser.email, "role": foundUser.role },
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: '30m' }
       );
       const refreshToken = jwt.sign(
-        { "username": foundUser.username },
+        { "email": foundUser.email },
         process.env.REFRESH_TOKEN_SECRET,
         { expiresIn: '1d' }
       );
