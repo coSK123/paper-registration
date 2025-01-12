@@ -9,8 +9,8 @@ export class AuthentificationService {
   constructor(private http: HttpClient) {
    }
 
-   authenticate(username: string, password: string) {
-     this.http.post('http://localhost:3000/auth', {"user":username, "password":password}).subscribe((response) => {
+   authenticate(email: string, password: string) {
+     this.http.post('http://localhost:3000/auth', {"email":email, "password":password}).subscribe((response) => {
        console.log(response);
      });
    }

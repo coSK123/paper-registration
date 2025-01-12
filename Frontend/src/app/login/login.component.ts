@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AuthentificationService } from '../services/authentification.service';
+import { AuthentificationService } from '../services/authentificationService/authentification.service';
 
 @Component({
   selector: 'app-login',
@@ -11,12 +11,12 @@ import { AuthentificationService } from '../services/authentification.service';
 })
 export class LoginComponent {
    password: string = '';
-   username: string = '';
+   email: string = '';
  constructor(private authService: AuthentificationService) {
 
  }
 
  onLogin() {
-    this.authService.authenticate(this.username, this.password);
+    this.authService.authenticate(this.email, this.password);
  }
 }
