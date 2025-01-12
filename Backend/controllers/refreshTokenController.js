@@ -15,10 +15,10 @@ export const handleRefreshToken = async (req, res) => {
     if (!foundUser) return res.sendStatus(403);
 
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
-      if (err || foundUser.username !== decoded.username) return res.sendStatus(403);
+      if (err || foundUser.email !== decoded.email) return res.sendStatus(403);
 
       const accessToken = jwt.sign(
-        { "username": foundUser.username },
+        { "email": foundUser.email, "role": foundUser.role },
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: '15m' }
       );
