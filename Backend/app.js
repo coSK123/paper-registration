@@ -23,8 +23,8 @@ app.use('/register', registerRoutes);
 app.use('/auth', authRoutes);
 app.use('/refresh', refreshRoutes);
 app.use('/logout', logoutRoutes);
-app.use('/users', getUsersRoutes);
 app.use(verifyJWT);
+app.use('/users', getUsersRoutes);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');

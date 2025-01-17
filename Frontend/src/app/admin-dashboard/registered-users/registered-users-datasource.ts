@@ -3,7 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge, BehaviorSubject } from 'rxjs';
-import { GetUsersFromDatabaseService } from '../../services/get-users-from-database.service';
+import { GetUsersFromDatabaseService } from '../../services/get-user-database-service/get-users-from-database.service';
 import { User } from '../../services/registerService/register.service';
 
 export interface RegisteredUsersItem {

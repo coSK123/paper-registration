@@ -3,7 +3,7 @@ import { MatTableModule, MatTable } from '@angular/material/table';
 import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
 import { MatSortModule, MatSort } from '@angular/material/sort';
 import { RegisteredUsersDataSource, RegisteredUsersItem } from './registered-users-datasource';
-import { GetUsersFromDatabaseService } from '../../services/get-users-from-database.service';
+import { GetUsersFromDatabaseService } from '../../services/get-user-database-service/get-users-from-database.service';
 
 @Component({
   selector: 'app-registered-users',
