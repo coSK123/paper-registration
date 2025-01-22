@@ -12,6 +12,7 @@ export class AuthentificationService {
    }
 
    authenticate(email: string, password: string) {
+    console.log(environment.name)
      this.http.post<{ accessToken: string }>(`${environment.apiUrl}/auth`, {"email":email, "password":password}).subscribe((response) => {
        console.log(response);
       this.tokenService.storeToken(response.accessToken);
