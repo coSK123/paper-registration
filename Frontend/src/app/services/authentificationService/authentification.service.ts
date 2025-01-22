@@ -11,7 +11,7 @@ export class AuthentificationService {
    }
 
    authenticate(email: string, password: string) {
-     this.http.post<{ accessToken: string }>('http://localhost:3000/auth', {"email":email, "password":password}).subscribe((response) => {
+     this.http.post<{ accessToken: string }>('http://141.72.188.181:3000/auth', {"email":email, "password":password}).subscribe((response) => {
        console.log(response);
       this.tokenService.storeToken(response.accessToken);
      });
