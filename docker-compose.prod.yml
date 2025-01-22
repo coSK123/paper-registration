@@ -10,7 +10,7 @@ services:
     volumes:
       - db-data:/var/lib/mysql
     networks:
-
+      - app-network
   frontend:
     build:
       context: ./Frontend
