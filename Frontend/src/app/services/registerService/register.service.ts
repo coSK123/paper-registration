@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
 
 
 export interface User{
@@ -22,7 +23,7 @@ export class RegisterService {
 
   register(newUser: User) {
     console.log(newUser);
-    this.http.post('http://localhost:3000/register', {"firstname":newUser.firstname,
+    this.http.post(`${environment.apiUrl}/register`, {"firstname":newUser.firstname,
                                                       "lastname":newUser.lastname,
                                                       "email": newUser.email,
                                                       "password": newUser.password,

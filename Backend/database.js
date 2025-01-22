@@ -35,22 +35,34 @@ const checkDatabaseConnection = (host, port, timeout) => {
 
 const connectWithRetry = async () => {
   try {
-    await checkDatabaseConnection(process.env.DB_HOST, 3306, 2000);
+    console.log(`Attempting to connect to the database. Attempt ${retries + 1}/${maxRetries}...`);
+    
+    // Check raw TCP connection first
+    await checkDatabaseConnection(process.env.DB_HOST, 3306, 5000);
+    console.log('TCP connection to the database succeeded.');
+
+    // Try Sequelize authentication
     await sequelize.authenticate();
-    console.log('Connection has been established successfully.');
+    console.log('Sequelize connection has been established successfully.');
+
+    // Sync models
     await sequelize.sync();
     console.log('Database synchronized successfully.');
     connected = true;
   } catch (err) {
-    if (retries < maxRetries && !connected) {
-      retries += 1;
-      console.log(`Retrying to connect to the database (${retries}/${maxRetries})...`);
-      console.error('Error:', err.message);
-      setTimeout(connectWithRetry, 5000); // wait 5 seconds before retrying
-    } else if (!connected) {
-      console.error('Unable to connect to the database after multiple attempts:', err);
+    retries++;
+    console.error(`Database connection failed. Error: ${err.message}`);
+    
+    if (retries < maxRetries) {
+      console.log(`Retrying to connect to the database in 5 seconds... (Attempt ${retries}/${maxRetries})`);
+      await new Promise((resolve) => setTimeout(resolve, 5000)); // Wait before retrying
+      await connectWithRetry(); // Recursive retry
+    } else {
+      console.error('Max retries reached. Unable to connect to the database.');
+      process.exit(1); // Exit the process if retries fail
     }
   }
 };
+
 
 export { sequelize, connectWithRetry };
