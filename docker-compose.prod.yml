@@ -1,6 +1,5 @@
 
 services:
-
   db:
     image: mysql:latest
     environment:
@@ -15,16 +14,21 @@ services:
   frontend:
     build:
       context: ./Frontend
+      dockerfile: Dockerfile.prod 
     ports:
-      - "4100:80"
+      - "4100:80" 
     depends_on:
       - backend
     networks:
       - app-network
+    environment:
+      - NODE_ENV=production 
+    restart: always
 
   backend:
     build:
       context: ./Backend
+      
     ports:
       - "3000:3000"
     environment:
@@ -32,12 +36,12 @@ services:
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
+      - NODE_ENV=production
     depends_on:
       - db
     networks:
       - app-network
-
-  
+    restart: always
 
 networks:
   app-network:
@@ -45,3 +49,4 @@ networks:
 
 volumes:
   db-data:
+    driver: local
