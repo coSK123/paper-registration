@@ -15,7 +15,7 @@ export const handleLogout = async (req, res) => {
 
    foundUser.update({refreshToken: null});
    res.clearCookie('jwt', {httpOnly: true, maxAge: 24*60*60*1000}); // in production secure: true
-   res.sendStatus(204);
+   res.sendStatus(200);
   } catch (err) {
     res.status(500).json({ 'message': err.message });
   }
