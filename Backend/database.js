@@ -65,4 +65,4 @@ const connectWithRetry = async () => {
 };
 
 
-export { sequelize, connectWithRetry };
+export { sequelize, connectWithRetry, checkDatabaseConnection };
