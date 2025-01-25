@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { sequelize, connectWithRetry } from './database.js';
-import verifyJWT from './middleware/verifyJWT.js';
+import {verifyJWT} from './middleware/verifyJWT.js';
 import registerRoutes from './routes/register.js';
 import authRoutes from './routes/auth.js';
 import refreshRoutes from './routes/refresh.js';
