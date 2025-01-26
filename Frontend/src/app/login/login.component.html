@@ -1,16 +1,36 @@
-
-<div class="login-container">
-    <h2>Login</h2>
-    <form>
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="text" id="email" name="email" [(ngModel)]="email" required>
+<form [formGroup]="loginForm" novalidate (ngSubmit)="onLogin()">
+  <mat-card class="shipping-card">
+    <mat-card-header>
+      <mat-card-title>Anmelden</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Email" formControlName="email">
+            @if (loginForm.controls['email'].hasError('required')) {
+            <mat-error>Email is <strong>required</strong></mat-error>
+            }
+          </mat-form-field>
         </div>
-        <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" [(ngModel)]="password" required>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Password" formControlName="password">
+            @if (loginForm.controls['password'].hasError('required')) {
+            <mat-error>Password is <strong>required</strong></mat-error>
+            }
+          </mat-form-field>
         </div>
-        <button (click)="onLogin()" type="submit">Login</button>
-    </form>
-</div>
-
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <mat-dialog-actions>
+        <button mat-raised-button color="primary" type="button" (click)="onLogin()">
+          Submit
+        </button>
+      </mat-dialog-actions>
+    </mat-card-actions>
+  </mat-card>
+</form>
