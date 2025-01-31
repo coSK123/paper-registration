@@ -48,7 +48,7 @@ const startServer = async () => {
           firstname: 'Admin',
           lastname: 'User',
           email: process.env.ADMIN,
-          role: 'admin',
+          role: 'Administrator',
           password: process.env.ADMIN_PASSWORD,
         },
       };

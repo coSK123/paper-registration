@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {jwtDecode} from 'jwt-decode';
 
 export interface DecodedToken {
-  username: string;
+  email: string;
   role: string;
   exp: number;
 }
