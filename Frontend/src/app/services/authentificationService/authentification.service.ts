@@ -19,7 +19,6 @@ export class AuthentificationService {
   ) {}
 
   authenticate(email: string, password: string) {
-    console.log(environment.name);
     this.http
       .post<{ accessToken: string }>(`${environment.apiUrl}/auth`, {
         email: email,
