@@ -21,6 +21,7 @@ export class RegisterService {
   constructor(private http: HttpClient, private currentUser: CurrentUserService) { }
 
   register(newUser: User): Observable<any> {
+    console.log(newUser);
     if (this.currentUser.isAdmin()) {
       return this.http.post(`${environment.apiUrl}/register`, {
         "firstname": newUser.firstname,
@@ -28,8 +29,9 @@ export class RegisterService {
         "email": newUser.email,
         "password": newUser.password,
         "role": newUser.role
-      });
+      },{withCredentials: true});
     } else {
+      console.log('You do not have permission to register a new user.');
       return throwError(() => new Error('You do not have permission to register a new user.'));
     }
   }

@@ -21,12 +21,13 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
-app.use('/api/register', registerRoutes);
+
 app.use('/api/auth', authRoutes);
 app.use('/api/refresh', refreshRoutes);
 app.use('/api/logout', logoutRoutes);
 app.use(verifyJWT);
 app.use('/api/users', getUsersRoutes);
+app.use('/api/register', registerRoutes);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');

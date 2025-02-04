@@ -3,7 +3,9 @@ import User from "../model/user.js";
 import { getRoleOfUser } from "./userPermissionController.js";
 
 export const handleNewUser = async (req, res) => {
-  if (getRoleOfUser(req) !== "Administrator")
+  const userRole = await getRoleOfUser(req);
+  console.log(userRole);
+  if (userRole !== "Administrator")
     return res.status(403).json({ message: "Access Denied" });
   else {
     const { firstname, lastname, email, password, role } = req.body;
