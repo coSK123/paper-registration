@@ -15,18 +15,18 @@ import { handleNewUser } from './controllers/registerController.js';
 
 const app = express();
 const port = 3000;
-
-app.use(cors(corsOptions));
 app.use(credentials);
+app.use(cors(corsOptions));
+
 app.use(express.json());
 app.use(cookieParser());
 
-app.use('/register', registerRoutes);
-app.use('/auth', authRoutes);
-app.use('/refresh', refreshRoutes);
-app.use('/logout', logoutRoutes);
+app.use('/api/register', registerRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/refresh', refreshRoutes);
+app.use('/api/logout', logoutRoutes);
 app.use(verifyJWT);
-app.use('/users', getUsersRoutes);
+app.use('/api/users', getUsersRoutes);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
