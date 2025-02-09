@@ -7,6 +7,8 @@ import {
 } from '../token-handler-service/token-handler.service';
 import { environment } from '../../../environments/environment';
 import { jwtDecode } from 'jwt-decode';
+import { RoutingService } from '../routing-service/routing.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -15,8 +17,14 @@ export class AuthentificationService {
   constructor(
     private http: HttpClient,
     private tokenService: TokenHandlerService,
-    private CurrentUserService: CurrentUserService
-  ) {}
+    private CurrentUserService: CurrentUserService,
+    private routingService: RoutingService,
+    private router: Router
+  ) {
+    if(this.CurrentUserService.isUserLoggedIn()) {
+      this.router.navigate([this.routingService.routeAfterLogin()]);
+    }
+  }
 
   authenticate(email: string, password: string) {
     this.http
@@ -28,6 +36,7 @@ export class AuthentificationService {
         console.log(response);
         this.tokenService.storeToken(response.accessToken);
         this.storeUser(response);
+        this.router.navigate([this.routingService.routeAfterLogin()]);
       });
   }
 

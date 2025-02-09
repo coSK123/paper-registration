@@ -35,26 +35,14 @@ export class CurrentUserService {
   }
 
   isAdmin(): boolean {
-    if (this.getUser()?.role === 'Administrator') {
-      return true;
-    } else {
-      return false;
-    }
+    return this.getUser()?.role === 'Administrator';
   }
 
   isStudent(): boolean {
-    if (this.getUser()?.role === 'Student') {
-      return true;
-    } else {
-      return false;
-    }
+    return this.getUser()?.role === 'Student';
   }
 
   isProfessor(): boolean {
-    if (this.getUser()?.role === 'Professor') {
-      return true;
-    } else {
-      return false;
-    }
+    return this.getUser()?.role === 'Dozent';
   }
 }
