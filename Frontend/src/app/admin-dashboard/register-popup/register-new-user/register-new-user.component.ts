@@ -42,11 +42,13 @@ export class RegisterNewUserComponent {
     if (this.addressForm.valid) {
       if(this.addressForm.value.firstname && this .addressForm.value.lastname && this.addressForm.value.email && this.addressForm.value.password && this.addressForm.value.role){
        const newUser:  User = {firstname: this.addressForm.value.firstname, lastname: this.addressForm.value.lastname, email: this.addressForm.value.email, password: this.addressForm.value.password, role: this.addressForm.value.role};
-       this.registrationService.register(newUser);
+       this.registrationService.register(newUser).subscribe((answer) => {
+          console.log(answer);
+       });
        this.dialogRef.close();
       }
     } else {
-      // Show errors or prevent closing
+      console.log('Form is invalid');
     }
   }
 }

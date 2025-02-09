@@ -7,16 +7,22 @@ export const authInterceptor: HttpInterceptorFn = (
   req: HttpRequest<any>,
   next: HttpHandlerFn
 ): Observable<HttpEvent<any>> => {
-const token = inject(TokenHandlerService).getToken();
-if (token) {
-  const cloned = req.clone({
-    setHeaders: {
-      authorization: token,
-    },
+  const token = inject(TokenHandlerService).getToken();
+  let cloned = req;
+
+  if (token) {
+    cloned = req.clone({
+      setHeaders: {
+        authorization: token,
+      }
+    });
+  cloned = cloned.clone({
+    withCredentials: true
   });
+
   return next(cloned);
 } else {
+  
   return next(req);
 }
-};
-
+}
