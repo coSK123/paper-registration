@@ -24,3 +24,5 @@ export const getRoleOfUser = async (req) => {
     return "Access Denied";
   }
 };
+
+export default getRoleOfUser;
