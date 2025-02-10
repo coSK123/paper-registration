@@ -8,9 +8,8 @@ describe('PaperIdeaDashboardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PaperIdeaDashboardComponent]
-    })
-    .compileComponents();
+      imports: [PaperIdeaDashboardComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(PaperIdeaDashboardComponent);
     component = fixture.componentInstance;

@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PaperIdeaPopUpComponent } from './paper-idea-pop-up.component';
+import { PaperIdeaPopupComponent } from './paper-idea-pop-up.component';
 
 describe('PaperIdeaPopUpComponent', () => {
-  let component: PaperIdeaPopUpComponent;
-  let fixture: ComponentFixture<PaperIdeaPopUpComponent>;
+  let component: PaperIdeaPopupComponent;
+  let fixture: ComponentFixture<PaperIdeaPopupComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PaperIdeaPopUpComponent]
-    })
-    .compileComponents();
+      imports: [PaperIdeaPopupComponent],
+    }).compileComponents();
 
-    fixture = TestBed.createComponent(PaperIdeaPopUpComponent);
+    fixture = TestBed.createComponent(PaperIdeaPopupComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

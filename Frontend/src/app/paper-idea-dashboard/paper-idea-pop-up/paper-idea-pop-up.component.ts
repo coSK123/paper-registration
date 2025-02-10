@@ -1,6 +1,6 @@
-import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
-import {MatButtonModule} from '@angular/material/button';
-import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { PaperIdeaPopupContentComponent } from './paper-idea-popup-content/paper-idea-popup-content.component';
 
 /**
@@ -20,7 +20,7 @@ export class PaperIdeaPopupComponent {
   openDialog() {
     const dialogRef = this.dialog.open(PaperIdeaPopupContentComponent);
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog result: ${result}`);
     });
   }
