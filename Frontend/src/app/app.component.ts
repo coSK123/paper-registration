@@ -1,22 +1,23 @@
-import { Component } from '@angular/core';
-import { FrontpageComponent } from './frontpage/frontpage.component';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { HeaderComponent } from './sharedComponents/header/header.component';
-
-
+import { CurrentUserService } from './services/current-user/current-user.service';
+import { LoginComponent } from './login/login.component';
+import { Observable } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { NavbarComponent } from './sharedComponents/navigation-bar/navbar.component';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [HeaderComponent, RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [ HeaderComponent, LoginComponent, CommonModule, NavbarComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
-
+  styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'Frontend';
 
-  constructor() {
+  isLoggedIn$:Observable<boolean>;
 
+  constructor(private currentUser: CurrentUserService) {
+    this.isLoggedIn$ = this.currentUser.loginStatusChanged;
   }
 }

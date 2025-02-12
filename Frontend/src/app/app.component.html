@@ -1,4 +1,7 @@
-<app-header></app-header>
-<router-outlet></router-outlet>
-
-
+@if(isLoggedIn$ | async){
+    <app-header></app-header>
+    <app-navbar></app-navbar>
+}
+@else{
+    <app-login></app-login>
+}
