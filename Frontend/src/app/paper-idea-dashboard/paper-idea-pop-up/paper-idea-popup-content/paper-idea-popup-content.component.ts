@@ -11,6 +11,7 @@ import { RegisterNewUserComponent } from '../../../admin-dashboard/register-popu
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatChipsModule} from '@angular/material/chips';
 
 @Component({
   standalone: true,
@@ -23,6 +24,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatDialogModule,
     FormsModule,
     MatFormFieldModule,
+    MatChipsModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './paper-idea-popup-content.component.html',
