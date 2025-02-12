@@ -5,6 +5,7 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import { AuthGuard } from './services/route-guard/route-guard';
 import { AppComponent } from './app.component';
 import { PaperIdeaDashboardComponent } from './paper-idea-dashboard/paper-idea-dashboard.component';
+import { ProfessorGuard } from './services/route-guard/route-guard-d';
 
 
 export const routes: Routes = [
@@ -12,5 +13,5 @@ export const routes: Routes = [
     {path: 'login', component: LoginComponent},
     {path: 'a/dashboard', component: AdminDashboardComponent},
     {path: '', canActivate: [AuthGuard], component: AppComponent},
-    {path: 'd/dashboard', component: PaperIdeaDashboardComponent}
+    {path: 'd/dashboard', canActivate:[ProfessorGuard], component: PaperIdeaDashboardComponent}
 ];
