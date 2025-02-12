@@ -18,4 +18,8 @@ export class RoutingService {
       return '/login';
     }
   }
+
+  routeAfterLogout() {
+    return '/login';
+  }
 }
