@@ -1,8 +1,8 @@
-import { sequelize } from "../database";
+import { sequelize } from "../database.js";
 import { DataTypes } from "sequelize";
 
 
-const Semster = sequelize.define('Semester', {
+const Semester = sequelize.define('Semester', {
     name: {
         type: DataTypes.STRING,
         allowNull: false
@@ -13,4 +13,4 @@ const Semster = sequelize.define('Semester', {
     }
 });
 
-export default Semster;
+export default Semester;

@@ -1,4 +1,4 @@
-
+import  Semester  from '../model/semester.js';
 
 export async function getActiveSemester() {
     try {
@@ -8,7 +8,7 @@ export async function getActiveSemester() {
             }
         });
         if(semesters.length === 0) {
-            return "2026";
+            return 1;
         }
         return semesters[0].id;
     } catch (err) {

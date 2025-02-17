@@ -1,5 +1,6 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../database.js';
+import Semester from './semester.js';	
 
 const PaperEntry = sequelize.define('PaperEntry', {
   title: {

@@ -1,4 +1,3 @@
-import PaperEntry from '../model/paperEntry.js';
 import { createKeyPointAndConnectToPaper } from '../database/keyPointCreation.js';
 import { createPaper } from '../database/createPaper.js';
 
@@ -10,6 +9,7 @@ export const handleNewPaperIdea = async (req, res) => {
             .json({ message: "Not all required fields were filled out" });
 
     try {
+        console.log(groupsize);
        const paperID = createPaper({ title, description, creator, groupsize });
 
        createKeyPointAndConnectToPaper( keyPoints, paperID);

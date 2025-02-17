@@ -1,4 +1,5 @@
-import { getActiveSemester } from "./getActiveSemester";
+import { getActiveSemester } from "./getActiveSemester.js";
+import  PaperEntry  from "../model/paperEntry.js";
 
 
 export async function createPaper(paper) {
@@ -7,12 +8,14 @@ export async function createPaper(paper) {
         return { message: "Not all required fields were filled out" };
 
     try {
-        const semesterid = getActiveSemester();
+        console.log(groupsize + "Here it isssssssssss!!!!!!");
+        const semesterid = await getActiveSemester();
+
         const paperEntry = await PaperEntry.create({
             title: title,
             description: description,
             creator: creator,
-            groupsize: groupsize,
+            groupSize: groupsize,
             semesterId: semesterid
         });
 

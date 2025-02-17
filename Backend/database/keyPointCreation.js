@@ -10,7 +10,7 @@ export async function createKeyPointAndConnectToPaper( keyPoints, paperId ) {
             await connectPaperAndKeypoint( keyPoint.id, paperId );
         }
     } catch (err) {
-        res.status(500).json({ message: err.message });
+       
     }
 
 
@@ -23,6 +23,6 @@ async function connectPaperAndKeypoint( keyPointId, paperId ) {
             keyPointId: keyPointId,
         });
     } catch (err) {
-        res.status(500).json({ message: err.message });
+       
     }
 }
