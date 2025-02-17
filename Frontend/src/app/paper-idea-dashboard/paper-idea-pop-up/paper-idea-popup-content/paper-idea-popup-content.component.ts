@@ -54,8 +54,6 @@ export class PaperIdeaPopupContentComponent {
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
   readonly tags = signal<Tag[]>([{name: 'Lemon'}, {name: 'Lime'}, {name: 'Apple'}]);
   readonly announcer = inject(LiveAnnouncer);
-  databaseTags = [{name: 'Lemon'}, {name: 'Lime'}, {name: 'Apple'}];
-
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
 
