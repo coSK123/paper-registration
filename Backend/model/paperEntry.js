@@ -18,8 +18,12 @@ const PaperEntry = sequelize.define('PaperEntry', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  semester: {
-    type: DataTypes.STRING,
+  semesterId: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: Semester,
+      key: 'id',
+    },
     allowNull: false,
   },
 });
