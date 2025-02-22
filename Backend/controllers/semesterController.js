@@ -1,6 +1,6 @@
-import Semester from "../model/semester";
+import Semester from "../model/semester.js";
 
-const getActiveSemester = async (req, res) => {
+export const getActiveSemester = async (req, res) => {
     try {
         
         const activeSemester = await Semester.findOne({ where: { active: true } });
@@ -15,7 +15,7 @@ const getActiveSemester = async (req, res) => {
     }
 }
 
-const getSemesters = async (req, res) => {
+export const getSemesters = async (req, res) => {
     try {
         const semesters = await Semester.findAll();
         res.json(semesters);
@@ -24,7 +24,7 @@ const getSemesters = async (req, res) => {
     }
 };
 
-const activateSemester = async (req, res) => {
+export const activateSemester = async (req, res) => {
     semester = req.body;
     try{
         let databaseSemester = await Semester.findOne({ where: { name:semester } })
@@ -42,4 +42,3 @@ const activateSemester = async (req, res) => {
 
 }
 
-export default { getActiveSemester, getSemesters, activateSemester };
