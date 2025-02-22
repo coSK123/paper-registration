@@ -3,14 +3,21 @@
         Semester Auswahl
     </mat-card-header>
     <mat-card-content>
-        <mat-form-field>
-            <mat-label>Semester</mat-label>
-            <mat-select [(value)]="selectedSemester">
-                @for (semester of semesters; track semester) {
-                  <mat-option [value]="semester">{{semester}}</mat-option>
-                }
-              </mat-select>
+      <p>The currently active semester is <b>{{currentlyActiveSemester}}</b> </p>
+      <p>Create or choose a semester to activate:</p>
+        <mat-form-field >
+          <mat-label>Semester</mat-label>
+          <input type="text"
+                 placeholder="Choose a semester"
+                 aria-label="Text"
+                 matInput
+                 [formControl]="myControl"
+                 [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete">
+            @for (option of filteredOptions | async; track option) {
+              <mat-option [value]="option">{{option}}</mat-option>
+            }
+          </mat-autocomplete>
         </mat-form-field>
-        {{selectedSemester}}
     </mat-card-content>
 </mat-card>
