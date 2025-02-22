@@ -25,16 +25,19 @@ export const getSemesters = async (req, res) => {
 };
 
 export const activateSemester = async (req, res) => {
-    semester = req.body;
+    let semester = req.body;
+    console.log("SEMESTER: "+semester.name)
     try{
-        let databaseSemester = await Semester.findOne({ where: { name:semester } })
+        let databaseSemester = await Semester.findOne({ where: { name:semester.name } })
+        console.log("DATABASE SEMESTER: "+databaseSemester)
         if(!databaseSemester){
             await Semester.update({active:false}, {where:{active:true}})
-            await Semester.create({name:semester, active:true})
+            await Semester.create({name:semester.name, active:true})
         } else{
             await Semester.update({active:false}, {where:{active:true}})
             await databaseSemester.update({active:true})
         }
+        res.status(201).json({success: `Semester ${semester.name} activated!`});
     }
     catch (error) {
         res.status(500).send(error.message);

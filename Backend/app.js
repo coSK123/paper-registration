@@ -33,9 +33,9 @@ app.use(verifyJWT);
 app.use('/api/users', getUsersRoutes);
 app.use('/api/register', registerRoutes);
 app.use('/api/paper', createPaperIdeaRoutes);
-app.use('api/getActiveSemester', activeSemesterRoutes);
-app.use('api/allSemesters', allSemestersRoutes);
-app.use('api/setActiveSemester', setActiveSemesterRoutes);
+app.use('/api/getActiveSemester', activeSemesterRoutes);
+app.use('/api/allSemesters', allSemestersRoutes);
+app.use('/api/setActiveSemester', setActiveSemesterRoutes);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');

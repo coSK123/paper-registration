@@ -28,13 +28,12 @@ export class ActiveSemesterComponent {
   myControl = new FormControl('');
   filteredOptions: Observable<string[]>;
 
-  semesters: string[];
-  currentlyActiveSemester: string;
+  semesters: string[] = [];
+  currentlyActiveSemester: string = "";
 
   constructor(private activeSemesterService: ActiveSemesterService) {
-    this.currentlyActiveSemester =
-      this.activeSemesterService.getCurrentActiveSemester();
-    this.semesters = this.activeSemesterService.getAllSemesters();
+    this.activeSemesterService.getCurrentActiveSemester().subscribe((semester) => {this.currentlyActiveSemester = semester.name;});
+    this.activeSemesterService.getAllSemesters().subscribe((semesters) => {this.semesters = semesters.map((semester) => semester.name);});
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map((value) => this._filter(value || ''))
