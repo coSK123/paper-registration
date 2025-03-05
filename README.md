@@ -19,11 +19,11 @@ This repository contains a Paper-Registration Tool for Universities. The way thi
     - One `.env` for the Backend
     - One `.env` in general
 
-    You can find two `example.env` files in the repository:
+    You can find two `env.example` files in the repository:
     - One in the `Backend` folder
     - One in the top-most folder
 
-    Use these to create your own `.env` files by supplying values similar to the example values that you find in those files. There are some overlapping fields in these two files, so make sure that you provide the same values for these fields.
+    Use these to create your own `.env` files by supplying values similar to the example values that you find in those files. There are some overlapping fields in these two files, so make sure that you provide the same values for these fields. Note that you can just copy the contents of the env.example files if you just want to try the tool quickly. Most of the fiels should be self explanatory. ACCESS_TOKEN and REFRESH_TOKEN should be chosen as long randomly generated strings for safety.
 
 ### Running the Application
 
@@ -37,4 +37,4 @@ This repository contains a Paper-Registration Tool for Universities. The way thi
     docker-compose up --build -d
     ```
 
-After doing this, all containers should be running and you can find the web interface at [http://localhost:4100/](http://localhost:4100/).
+After doing this, all containers should be running and you can find the web interface at [http://localhost:4100/](http://localhost:4100/). Note that the credentials you defined in the Backend .env will be the only credentials you can log in with at the start.
