@@ -12,6 +12,10 @@ import credentials from './middleware/credentials.js';
 import getUsersRoutes from './routes/getUsers.js';
 import User from './model/user.js'; // Import the User model
 import { handleNewUser } from './controllers/registerController.js';
+import createPaperIdeaRoutes from './routes/createPaperIdea.js';
+import activeSemesterRoutes from './routes/getActiveSemester.js';
+import allSemestersRoutes from './routes/getSemesters.js';
+import setActiveSemesterRoutes from './routes/setActiveSemester.js';
 
 const app = express();
 const port = 3000;
@@ -28,6 +32,10 @@ app.use('/api/logout', logoutRoutes);
 app.use(verifyJWT);
 app.use('/api/users', getUsersRoutes);
 app.use('/api/register', registerRoutes);
+app.use('/api/paper', createPaperIdeaRoutes);
+app.use('/api/getActiveSemester', activeSemesterRoutes);
+app.use('/api/allSemesters', allSemestersRoutes);
+app.use('/api/setActiveSemester', setActiveSemesterRoutes);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');

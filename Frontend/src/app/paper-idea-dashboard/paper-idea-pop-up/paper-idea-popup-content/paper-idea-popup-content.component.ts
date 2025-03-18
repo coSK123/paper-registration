@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, inject, model, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  model,
+  signal,
+} from '@angular/core';
 import {
   FormBuilder,
   FormsModule,
@@ -11,11 +17,16 @@ import { RegisterNewUserComponent } from '../../../admin-dashboard/register-popu
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {MatChipEditedEvent, MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
+import {
+  MatChipEditedEvent,
+  MatChipInputEvent,
+  MatChipsModule,
+} from '@angular/material/chips';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatIconModule } from '@angular/material/icon';
-interface Tag{
+import { CreatePaperIdeaService } from '../../../services/create-paper-idea-service/create-paper-idea.service';
+interface Tag {
   name: string;
 }
 
@@ -31,7 +42,7 @@ interface Tag{
     FormsModule,
     MatFormFieldModule,
     MatChipsModule,
-    MatIconModule
+    MatIconModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './paper-idea-popup-content.component.html',
@@ -46,22 +57,24 @@ export class PaperIdeaPopupContentComponent {
     oldTags: [[]],
   });
 
-
-
-
-  constructor(private dialogRef: MatDialogRef<RegisterNewUserComponent>) {}
+  constructor(
+    private dialogRef: MatDialogRef<RegisterNewUserComponent>,
+    private createPaperIdea: CreatePaperIdeaService
+  ) {}
   readonly addOnBlur = true;
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
-  readonly tags = signal<Tag[]>([{name: 'Lemon'}, {name: 'Lime'}, {name: 'Apple'}]);
+  readonly tags = signal<Tag[]>([
+    { name: 'Lemon' },
+    { name: 'Lime' },
+    { name: 'Apple' },
+  ]);
   readonly announcer = inject(LiveAnnouncer);
-  databaseTags = [{name: 'Lemon'}, {name: 'Lime'}, {name: 'Apple'}];
-
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
 
     // Add our fruit
     if (value) {
-      this.tags.update(tags => [...tags, {name: value}]);
+      this.tags.update((tags) => [...tags, { name: value }]);
     }
 
     // Clear the input value
@@ -69,7 +82,7 @@ export class PaperIdeaPopupContentComponent {
   }
 
   remove(tag: Tag): void {
-    this.tags.update(tags => {
+    this.tags.update((tags) => {
       const index = tags.indexOf(tag);
       if (index < 0) {
         return tags;
@@ -91,7 +104,7 @@ export class PaperIdeaPopupContentComponent {
     }
 
     // Edit existing fruit
-    this.tags.update(tags => {
+    this.tags.update((tags) => {
       const index = tags.indexOf(tag);
       if (index >= 0) {
         tags[index].name = value;
@@ -109,6 +122,15 @@ export class PaperIdeaPopupContentComponent {
         this.addressForm.value.description &&
         this.addressForm.value.groupsize
       ) {
+        const tagNames = this.tags().map((tag) => tag.name);
+        this.createPaperIdea
+          .createPaperIdea(
+            this.addressForm.value.title,
+            this.addressForm.value.description,
+            this.addressForm.value.groupsize,
+            tagNames
+          )
+          .subscribe((response) => {console.log(response)});
         this.dialogRef.close();
       }
     } else {

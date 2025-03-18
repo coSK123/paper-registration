@@ -17,13 +17,8 @@
 
       <mat-form-field class="full-width">
         <mat-label>Group Size</mat-label>
-        <input matInput formControlName="groupsize" />
+        <input matInput formControlName="groupsize" placeholder="1-3" />
       </mat-form-field>
-        <mat-chip-listbox multiple formControlName="oldTags">
-          @for(tag of databaseTags; track tag) {
-          <mat-chip-option>{{ tag.name }}</mat-chip-option>
-          }
-        </mat-chip-listbox>
       <mat-form-field class="mat-form-field">
         <mat-label>Add a new tag</mat-label>
         <mat-chip-grid #chipGrid aria-label="Add a new tag">

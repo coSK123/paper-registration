@@ -12,7 +12,6 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
 const maxRetries = 5;
 let retries = 0;
 let connected = false;
-
 const checkDatabaseConnection = (host, port, timeout) => {
   return new Promise((resolve, reject) => {
     const socket = new net.Socket();

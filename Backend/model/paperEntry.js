@@ -1,5 +1,6 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../database.js';
+import Semester from './semester.js';	
 
 const PaperEntry = sequelize.define('PaperEntry', {
   title: {
@@ -18,8 +19,12 @@ const PaperEntry = sequelize.define('PaperEntry', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  semester: {
-    type: DataTypes.STRING,
+  semesterId: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: Semester,
+      key: 'id',
+    },
     allowNull: false,
   },
 });
