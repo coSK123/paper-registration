@@ -1,26 +1,35 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../database.js';
 import PaperEntry from './paperEntry.js';
-import KeyPoint from './keyPoint.js';
+import KeyPoint from './keyPoints.js';
+
 
 const PaperKeyPoint = sequelize.define('PaperKeyPoint', {
-  paperEntryId: {
+
+  PaperEntryId: {
     type: DataTypes.INTEGER,
     references: {
       model: PaperEntry,
       key: 'id',
-    },
+    }
   },
-  keyPointId: {
+  KeyPointId: {
     type: DataTypes.INTEGER,
     references: {
       model: KeyPoint,
       key: 'id',
-    },
-  },
+    }
+  }
 });
 
-PaperEntry.belongsToMany(KeyPoint, { through: PaperKeyPoint });
-KeyPoint.belongsToMany(PaperEntry, { through: PaperKeyPoint });
+PaperEntry.belongsToMany(KeyPoint, {
+  through: PaperKeyPoint,
+  foreignKey: 'PaperEntryId'
+});
+
+KeyPoint.belongsToMany(PaperEntry, {
+  through: PaperKeyPoint,
+  foreignKey: 'KeyPointId'
+});
 
 export default PaperKeyPoint;

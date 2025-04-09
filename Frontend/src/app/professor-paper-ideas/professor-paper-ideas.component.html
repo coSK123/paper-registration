@@ -1,0 +1,105 @@
+<div class="professor-paper-ideas-container">
+  <div class="heading">
+    <h1>My Paper Ideas</h1>
+    <p>View and manage papers you have submitted</p>
+  </div>
+  
+  <!-- Filter Section -->
+  <div class="filter-section">
+    <form [formGroup]="filterForm">
+      <div class="filter-row">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Search by title</mat-label>
+          <input matInput formControlName="titleSearch" (input)="onSearchChange($event)" placeholder="Search paper ideas...">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline" class="filter-field">
+          <mat-label>Group Size</mat-label>
+          <mat-select formControlName="groupSize" (selectionChange)="onFilterChange()">
+            <mat-option value="">All</mat-option>
+            <mat-option *ngFor="let size of groupSizeOptions" [value]="size">{{ size }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline" class="filter-field">
+          <mat-label>Key Points</mat-label>
+          <mat-select formControlName="keyPointIds" multiple (selectionChange)="onFilterChange()">
+            <mat-option *ngFor="let keyPoint of allKeyPoints" [value]="keyPoint.id">
+              {{ keyPoint.description }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline" class="filter-field">
+          <mat-label>Semester</mat-label>
+          <mat-select formControlName="semesterId">
+            <mat-option *ngFor="let semester of semesters" [value]="semester.id">
+              {{ semester.name }} {{ semester.active ? '(Active)' : '' }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </form>
+  </div>
+  
+  <div class="content">
+    <!-- Loading state -->
+    <div *ngIf="loading" class="loading-container">
+      <mat-icon class="loading-icon">sync</mat-icon>
+      <p>Loading your paper ideas...</p>
+    </div>
+    
+    <!-- Error state -->
+    <div *ngIf="error && !loading" class="error-container">
+      <mat-icon class="error-icon">error_outline</mat-icon>
+      <p>{{ error }}</p>
+      <button mat-raised-button color="primary" (click)="loadPaperIdeas()">
+        <mat-icon>refresh</mat-icon> Try Again
+      </button>
+    </div>
+    
+    <!-- Empty state -->
+    <div *ngIf="!loading && !error && paperIdeas.length === 0" class="empty-container">
+      <mat-icon class="empty-icon">note_add</mat-icon>
+      <p>You haven't submitted any paper ideas yet.</p>
+      <button mat-raised-button color="primary" [routerLink]="['/d/dashboard']">
+        <mat-icon>add</mat-icon> Create Paper Idea
+      </button>
+    </div>
+    
+    <!-- Paper Ideas List -->
+    <div *ngIf="!loading && !error && paperIdeas.length > 0" class="ideas-grid">
+      <mat-card class="paper-idea-card" *ngFor="let idea of paperIdeas" (click)="goToDetails(idea.id)">
+        <mat-card-header>
+          <mat-card-title>{{ idea.title }}</mat-card-title>
+          <mat-card-subtitle>
+            <div class="metadata">
+              <span><mat-icon>person</mat-icon> {{ idea.creator }}</span>
+              <span><mat-icon>group</mat-icon> Group Size: {{ idea.groupSize }}</span>
+              <span><mat-icon>calendar_today</mat-icon> {{ idea.createdAt | date }}</span>
+            </div>
+          </mat-card-subtitle>
+        </mat-card-header>
+        
+        <mat-card-content>
+          <p class="description">{{ idea.description }}</p>
+          <mat-divider></mat-divider>
+          <div class="tags-container" *ngIf="idea.KeyPoints && idea.KeyPoints.length > 0">
+            <mat-chip-set>
+              <mat-chip *ngFor="let keyPoint of idea.KeyPoints" highlighted>
+                {{ keyPoint.description }}
+              </mat-chip>
+            </mat-chip-set>
+          </div>
+        </mat-card-content>
+        
+        <mat-card-actions align="end">
+          <button mat-button color="primary" matTooltip="View Details">
+            <mat-icon>visibility</mat-icon> VIEW DETAILS
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div> 
