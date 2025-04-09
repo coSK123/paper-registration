@@ -3,14 +3,13 @@ import PaperEntry from "../model/paperEntry.js";
 
 export async function createPaper(paper) {
     const { title, description, creator, groupsize } = paper;
-    
-    // Validate required fields
+   
     if (!title || !description || !creator || !groupsize) {
         throw new Error("Not all required fields were filled out");
     }
 
     try {
-        // Get active semester ID
+       
         const semesterId = await getActiveSemester();
         
         if (!semesterId) {
@@ -19,7 +18,7 @@ export async function createPaper(paper) {
         
         console.log(`Creating paper entry with semester ID: ${semesterId}`);
         
-        // Create the paper entry
+       
         const paperEntry = await PaperEntry.create({
             title: title,
             description: description,
@@ -32,6 +31,6 @@ export async function createPaper(paper) {
         return paperEntry.id;
     } catch (err) {
         console.error("Error creating paper entry:", err);
-        throw err; // Re-throw to be handled by the controller
+        throw err; 
     }
 }

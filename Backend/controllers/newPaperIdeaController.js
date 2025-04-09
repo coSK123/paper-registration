@@ -4,7 +4,7 @@ import { createPaper } from '../database/createPaper.js';
 export const handleNewPaperIdea = async (req, res) => {
     const { title, description, creator, groupsize, keyPoints } = req.body;
     
-    // Validate required fields
+
     if (!title || !description || !creator || !groupsize) {
         return res
             .status(400)
@@ -14,7 +14,7 @@ export const handleNewPaperIdea = async (req, res) => {
     try {
         console.log(`Creating paper idea: ${title} by ${creator}`);
         
-        // Create the paper entry first
+       
         const paperID = await createPaper({ 
             title, 
             description, 
@@ -22,7 +22,7 @@ export const handleNewPaperIdea = async (req, res) => {
             groupsize 
         });
 
-        // Then create and connect key points if provided
+        
         if (keyPoints && keyPoints.length > 0) {
             await createKeyPointAndConnectToPaper(keyPoints, paperID);
         }

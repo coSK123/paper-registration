@@ -5,14 +5,59 @@ import {
   formatKeyPointsForFrontend, 
   formatSinglePaperIdeaKeyPoints 
 } from './keyPointUtils.js';
+import Semester from '../model/semester.js';
 
-/**
- * Get all paper ideas with their key points
- */
-export async function getAllPaperIdeas() {
+export async function getAllPaperIdeas(filters = {}) {
   try {
+    const { 
+      groupSize, 
+      keyPointIds, 
+      semesterId, 
+      titleSearch,
+      activeSemesterOnly = true
+    } = filters;
+    
+    // Build the where clause
+    const whereClause = {};
+    
+    // Add group size filter if provided
+    if (groupSize) {
+      whereClause.groupSize = groupSize;
+    }
+    
+    // Add title search if provided
+    if (titleSearch) {
+      whereClause.title = {
+        [Op.like]: `%${titleSearch}%`
+      };
+    }
+    
+    // Add semester filter if provided
+    if (semesterId) {
+      whereClause.semesterId = semesterId;
+    } else if (activeSemesterOnly) {
+      // If no semester specified and activeSemesterOnly is true, filter by active semester
+      const activeSemester = await Semester.findOne({ where: { active: true } });
+      if (activeSemester) {
+        whereClause.semesterId = activeSemester.id;
+      }
+    }
+    
+    // Build the include clause
+    const includeClause = [{ model: KeyPoint }];
+    
+    // Add keypoint filter if provided
+    if (keyPointIds && keyPointIds.length > 0) {
+      includeClause[0].where = {
+        id: {
+          [Op.in]: keyPointIds
+        }
+      };
+    }
+    
     const paperIdeas = await PaperEntry.findAll({
-      include: [{ model: KeyPoint }],
+      where: whereClause,
+      include: includeClause,
       order: [['createdAt', 'DESC']]
     });
     
@@ -23,9 +68,7 @@ export async function getAllPaperIdeas() {
   }
 }
 
-/**
- * Get a paper idea by ID with its key points
- */
+
 export async function getPaperIdeaById(id) {
   try {
     const paperIdea = await PaperEntry.findByPk(id, {
@@ -39,14 +82,57 @@ export async function getPaperIdeaById(id) {
   }
 }
 
-/**
- * Get paper ideas by professor email with their key points
- */
-export async function getProfessorPaperIdeas(email) {
+export async function getProfessorPaperIdeas(email, filters = {}) {
   try {
+    const { 
+      groupSize, 
+      keyPointIds, 
+      semesterId, 
+      titleSearch,
+      activeSemesterOnly = true
+    } = filters;
+    
+    // Build the where clause
+    const whereClause = { creator: email };
+    
+    // Add group size filter if provided
+    if (groupSize) {
+      whereClause.groupSize = groupSize;
+    }
+    
+    // Add title search if provided
+    if (titleSearch) {
+      whereClause.title = {
+        [Op.like]: `%${titleSearch}%`
+      };
+    }
+    
+    // Add semester filter if provided
+    if (semesterId) {
+      whereClause.semesterId = semesterId;
+    } else if (activeSemesterOnly) {
+      // If no semester specified and activeSemesterOnly is true, filter by active semester
+      const activeSemester = await Semester.findOne({ where: { active: true } });
+      if (activeSemester) {
+        whereClause.semesterId = activeSemester.id;
+      }
+    }
+    
+    // Build the include clause
+    const includeClause = [{ model: KeyPoint }];
+    
+    // Add keypoint filter if provided
+    if (keyPointIds && keyPointIds.length > 0) {
+      includeClause[0].where = {
+        id: {
+          [Op.in]: keyPointIds
+        }
+      };
+    }
+    
     const paperIdeas = await PaperEntry.findAll({
-      where: { creator: email },
-      include: [{ model: KeyPoint }],
+      where: whereClause,
+      include: includeClause,
       order: [['createdAt', 'DESC']]
     });
     

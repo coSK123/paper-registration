@@ -10,17 +10,14 @@ import logoutRoutes from './routes/logout.js';
 import corsOptions from './config/corsOptions.js';
 import credentials from './middleware/credentials.js';
 import getUsersRoutes from './routes/getUsers.js';
-import User from './model/user.js'; // Import the User model
-import PaperEntry from './model/paperEntry.js'; // Import PaperEntry model
-import KeyPoint from './model/keyPoints.js'; // Import KeyPoint model
-import PaperKeyPoint from './model/paperKeyPoint.js'; // Import PaperKeyPoint model (this will establish the associations)
-import Semester from './model/semester.js'; // Import Semester model
-import { handleNewUser } from './controllers/registerController.js';
+import User from './model/user.js'; 
+import Semester from './model/semester.js'; 
 import createPaperIdeaRoutes from './routes/createPaperIdea.js';
 import paperIdeasRoutes from './routes/paperIdeas.js';
 import activeSemesterRoutes from './routes/getActiveSemester.js';
 import allSemestersRoutes from './routes/getSemesters.js';
 import setActiveSemesterRoutes from './routes/setActiveSemester.js';
+import keypointsRoutes from './routes/keypoints.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import bcrypt from 'bcrypt';
 
@@ -32,26 +29,19 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
-// Auth routes that don't require JWT verification
+
 app.use('/api/auth', authRoutes);
 app.use('/api/refresh', refreshRoutes);
 app.use('/api/logout', logoutRoutes);
-
-// Apply JWT verification middleware to protected routes
 app.use(verifyJWT);
-
-// Paper routes - ensure specific routes come before generic ones
-// Use the paperIdeas routes for GET requests
 app.use('/api/paper', paperIdeasRoutes);
-// Use the createPaperIdea routes for POST requests
 app.use('/api/paper', createPaperIdeaRoutes);
-
-// Other protected routes
 app.use('/api/users', getUsersRoutes);
 app.use('/api/register', registerRoutes);
 app.use('/api/getActiveSemester', activeSemesterRoutes);
 app.use('/api/allSemesters', allSemestersRoutes);
 app.use('/api/setActiveSemester', setActiveSemesterRoutes);
+app.use('/api/keypoints', keypointsRoutes);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
@@ -61,22 +51,22 @@ app.get('/test', (req, res) => {
   res.send('test');
 });
 
-// Add 404 handler
+
 app.use((req, res, next) => {
   res.status(404).json({ message: `Route ${req.path} not found` });
 });
 
-// Add global error handler
+
 app.use(errorHandler);
 
 const startServer = async () => {
   await connectWithRetry();
   if (sequelize) {
-    // Check if the User table is empty
+   
     const userCount = await User.count();
     if (userCount === 0) {
       try {
-        // Create an admin user directly instead of using the controller
+       
         const hashedPassword = await bcrypt.hash(process.env.ADMIN_PASSWORD || '1234', 10);
         await User.create({
           firstname: 'Admin',
@@ -91,7 +81,6 @@ const startServer = async () => {
       }
     }
 
-    // Check if there are any semesters, if not create a default one
     const semesterCount = await Semester.count();
     if (semesterCount === 0) {
       try {

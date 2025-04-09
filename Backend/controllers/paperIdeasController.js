@@ -3,13 +3,20 @@ import {
   getPaperIdeaById as fetchPaperIdeaById,
   getProfessorPaperIdeas as fetchProfessorPaperIdeas
 } from '../database/getPaperIdeas.js';
+import { getPaperIdeas } from '../database/paperIdeaUtils.js';
 
-/**
- * Get all paper ideas
- */
 export const getAllPaperIdeas = async (req, res) => {
   try {
-    const paperIdeas = await fetchAllPaperIdeas();
+    // Extract filter parameters from query
+    const filters = {
+      groupSize: req.query.groupSize,
+      keyPointIds: req.query.keyPointIds ? req.query.keyPointIds.split(',').map(id => parseInt(id)) : undefined,
+      semesterId: req.query.semesterId ? parseInt(req.query.semesterId) : undefined,
+      titleSearch: req.query.titleSearch,
+      activeSemesterOnly: req.query.activeSemesterOnly !== 'false'
+    };
+    
+    const paperIdeas = await fetchAllPaperIdeas(filters);
     return res.status(200).json(paperIdeas);
   } catch (err) {
     console.error('Error fetching paper ideas:', err);
@@ -17,9 +24,6 @@ export const getAllPaperIdeas = async (req, res) => {
   }
 };
 
-/**
- * Get paper idea by ID
- */
 export const getPaperIdeaById = async (req, res) => {
   const { id } = req.params;
   
@@ -41,9 +45,6 @@ export const getPaperIdeaById = async (req, res) => {
   }
 };
 
-/**
- * Get paper ideas by professor email
- */
 export const getProfessorPaperIdeas = async (req, res) => {
   const { email } = req.params;
   
@@ -52,7 +53,16 @@ export const getProfessorPaperIdeas = async (req, res) => {
   }
   
   try {
-    const professorPaperIdeas = await fetchProfessorPaperIdeas(email);
+    // Extract filter parameters from query
+    const filters = {
+      groupSize: req.query.groupSize,
+      keyPointIds: req.query.keyPointIds ? req.query.keyPointIds.split(',').map(id => parseInt(id)) : undefined,
+      semesterId: req.query.semesterId ? parseInt(req.query.semesterId) : undefined,
+      titleSearch: req.query.titleSearch,
+      activeSemesterOnly: req.query.activeSemesterOnly !== 'false'
+    };
+    
+    const professorPaperIdeas = await fetchProfessorPaperIdeas(email, filters);
     
     return res.status(200).json(professorPaperIdeas);
   } catch (err) {
@@ -61,5 +71,25 @@ export const getProfessorPaperIdeas = async (req, res) => {
       message: 'Failed to fetch professor paper ideas', 
       error: err.message 
     });
+  }
+};
+
+export const getPaperIdeasController = async (req, res) => {
+  try {
+    const { titleSearch, groupSize, keyPointIds, semesterId, activeSemesterOnly } = req.query;
+    
+    const filters = {
+      titleSearch: titleSearch || '',
+      groupSize: groupSize ? parseInt(groupSize) : null,
+      keyPointIds: keyPointIds ? keyPointIds.split(',').map(id => parseInt(id)) : [],
+      semesterId: semesterId ? parseInt(semesterId) : null,
+      activeSemesterOnly: activeSemesterOnly === 'true'
+    };
+
+    const paperIdeas = await getPaperIdeas(filters);
+    res.json(paperIdeas);
+  } catch (error) {
+    console.error('Error fetching paper ideas:', error);
+    res.status(500).json({ message: 'Error fetching paper ideas' });
   }
 }; 

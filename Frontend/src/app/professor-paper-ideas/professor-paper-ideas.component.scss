@@ -18,6 +18,51 @@
     }
   }
 
+  .filter-section {
+    margin-bottom: 2rem;
+    background-color: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 8px;
+    
+    .filter-row {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      
+      .search-field {
+        flex: 2;
+      }
+      
+      .filter-field {
+        flex: 1;
+      }
+    }
+    
+    .key-points-filter {
+      margin-top: 1rem;
+      
+      mat-chip-set {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+      
+      mat-chip {
+        cursor: pointer;
+        transition: background-color 0.2s;
+        
+        &:hover {
+          background-color: rgba(63, 81, 181, 0.1);
+        }
+        
+        &[selected] {
+          background-color: #3f51b5;
+          color: white;
+        }
+      }
+    }
+  }
+
   .content {
     .loading-container, 
     .error-container, 
@@ -137,6 +182,38 @@
           }
         }
       }
+    }
+  }
+}
+
+.filter-section {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+  .filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    
+    .search-field {
+      flex: 1;
+      min-width: 250px;
+    }
+    
+    .filter-field {
+      min-width: 150px;
+    }
+    
+    .semester-checkbox {
+      margin-left: 1rem;
+    }
+    
+    button {
+      margin-left: auto;
     }
   }
 }

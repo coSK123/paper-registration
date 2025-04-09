@@ -4,6 +4,45 @@
     <p>View and manage papers you have submitted</p>
   </div>
   
+  <!-- Filter Section -->
+  <div class="filter-section">
+    <form [formGroup]="filterForm">
+      <div class="filter-row">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Search by title</mat-label>
+          <input matInput formControlName="titleSearch" (input)="onSearchChange($event)" placeholder="Search paper ideas...">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline" class="filter-field">
+          <mat-label>Group Size</mat-label>
+          <mat-select formControlName="groupSize" (selectionChange)="onFilterChange()">
+            <mat-option value="">All</mat-option>
+            <mat-option *ngFor="let size of groupSizeOptions" [value]="size">{{ size }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline" class="filter-field">
+          <mat-label>Key Points</mat-label>
+          <mat-select formControlName="keyPointIds" multiple (selectionChange)="onFilterChange()">
+            <mat-option *ngFor="let keyPoint of allKeyPoints" [value]="keyPoint.id">
+              {{ keyPoint.description }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline" class="filter-field">
+          <mat-label>Semester</mat-label>
+          <mat-select formControlName="semesterId">
+            <mat-option *ngFor="let semester of semesters" [value]="semester.id">
+              {{ semester.name }} {{ semester.active ? '(Active)' : '' }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </form>
+  </div>
+  
   <div class="content">
     <!-- Loading state -->
     <div *ngIf="loading" class="loading-container">
