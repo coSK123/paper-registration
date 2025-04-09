@@ -1,0 +1,25 @@
+<div class="student-dashboard-container">
+  <div class="welcome-section">
+    <h1>Welcome, {{ userName }}!</h1>
+    <p>This is your student dashboard. Here you can browse available paper ideas for the current semester.</p>
+  </div>
+
+  <div class="actions-section">
+    <mat-card class="action-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar>school</mat-icon>
+        <mat-card-title>Paper Ideas</mat-card-title>
+        <mat-card-subtitle>Browse available paper ideas</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>View all paper ideas that are available for the current semester. You can filter them by title, group size, and key points.</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" routerLink="/s/paper-ideas">
+          <mat-icon>visibility</mat-icon>
+          VIEW PAPER IDEAS
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div> 

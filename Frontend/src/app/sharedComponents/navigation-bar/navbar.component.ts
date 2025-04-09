@@ -33,6 +33,7 @@ export class NavbarComponent implements OnInit {
   private breakpointObserver = inject(BreakpointObserver);
   isProfessor = false;
   isAdmin = false;
+  isStudent = false;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -51,6 +52,7 @@ export class NavbarComponent implements OnInit {
     if (user) {
       this.isProfessor = user.role === 'Dozent';
       this.isAdmin = user.role === 'Administrator';
+      this.isStudent = user.role === 'Student';
     }
   }
 

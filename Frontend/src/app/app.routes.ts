@@ -8,6 +8,9 @@ import { PaperIdeaDashboardComponent } from './paper-idea-dashboard/paper-idea-d
 import { ProfessorGuard } from './services/route-guard/route-guard-d';
 import { AdminGuard } from './services/route-guard/route-guard-a';
 import { ProfessorPaperIdeasComponent } from './professor-paper-ideas/professor-paper-ideas.component';
+import { StudentPaperIdeasComponent } from './student-paper-ideas/student-paper-ideas.component';
+import { StudentGuard } from './services/route-guard/route-guard-s';
+import { StudentDashboardComponent } from './student-dashboard/student-dashboard.component';
 
 
 export const routes: Routes = [
@@ -17,5 +20,7 @@ export const routes: Routes = [
     {path: '', canActivate: [AuthGuard], component: AppComponent},
     {path: 'd/dashboard', canActivate:[ProfessorGuard], component: PaperIdeaDashboardComponent},
     {path: 'd/my-paper-ideas', canActivate:[ProfessorGuard], component: ProfessorPaperIdeasComponent},
+    {path: 's/dashboard', canActivate:[StudentGuard], component: StudentDashboardComponent},
+    {path: 's/paper-ideas', canActivate:[StudentGuard], component: StudentPaperIdeasComponent},
     {path: 'paper-idea/:id', canActivate:[AuthGuard], component: ProfessorPaperIdeasComponent}
 ];

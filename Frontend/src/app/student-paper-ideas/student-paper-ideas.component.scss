@@ -1,0 +1,170 @@
+.student-paper-ideas-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  
+  .heading {
+    margin-bottom: 24px;
+    
+    h1 {
+      font-size: 28px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: #333;
+    }
+    
+    p {
+      font-size: 16px;
+      color: #666;
+      margin: 0;
+    }
+  }
+  
+  .filter-section {
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 24px;
+    
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      
+      .search-field {
+        flex: 1;
+        min-width: 250px;
+      }
+      
+      .filter-field {
+        min-width: 200px;
+      }
+    }
+  }
+  
+  .content {
+    min-height: 400px;
+    
+    .loading-container, .error-container, .empty-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      text-align: center;
+      
+      mat-icon {
+        font-size: 48px;
+        width: 48px;
+        height: 48px;
+        margin-bottom: 16px;
+      }
+      
+      p {
+        font-size: 16px;
+        color: #666;
+        margin-bottom: 16px;
+      }
+    }
+    
+    .loading-container {
+      .loading-icon {
+        color: #1976d2;
+        animation: spin 1.5s linear infinite;
+      }
+    }
+    
+    .error-container {
+      .error-icon {
+        color: #f44336;
+      }
+    }
+    
+    .empty-container {
+      .empty-icon {
+        color: #9e9e9e;
+      }
+    }
+    
+    .ideas-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 20px;
+      
+      .paper-idea-card {
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+        
+        &:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        mat-card-header {
+          margin-bottom: 16px;
+          
+          mat-card-title {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 8px;
+          }
+          
+          mat-card-subtitle {
+            .metadata {
+              display: flex;
+              flex-wrap: wrap;
+              gap: 12px;
+              margin-top: 8px;
+              
+              span {
+                display: flex;
+                align-items: center;
+                font-size: 14px;
+                color: #666;
+                
+                mat-icon {
+                  font-size: 16px;
+                  width: 16px;
+                  height: 16px;
+                  margin-right: 4px;
+                }
+              }
+            }
+          }
+        }
+        
+        mat-card-content {
+          .description {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 16px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          
+          .tags-container {
+            margin-top: 16px;
+            
+            mat-chip-set {
+              display: flex;
+              flex-wrap: wrap;
+              gap: 8px;
+            }
+          }
+        }
+        
+        mat-card-actions {
+          padding: 8px 16px;
+        }
+      }
+    }
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+} 

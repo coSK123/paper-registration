@@ -21,19 +21,13 @@ import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 
-interface Semester {
-  id: number;
-  name: string;
-  active: boolean;
-}
-
 interface KeyPoint {
   id: number;
   description: string;
 }
 
 @Component({
-  selector: 'app-professor-paper-ideas',
+  selector: 'app-student-paper-ideas',
   standalone: true,
   imports: [
     CommonModule, 
@@ -52,16 +46,15 @@ interface KeyPoint {
     MatCheckboxModule,
     RouterLink
   ],
-  templateUrl: './professor-paper-ideas.component.html',
-  styleUrls: ['./professor-paper-ideas.component.scss']
+  templateUrl: './student-paper-ideas.component.html',
+  styleUrls: ['./student-paper-ideas.component.scss']
 })
-export class ProfessorPaperIdeasComponent implements OnInit {
+export class StudentPaperIdeasComponent implements OnInit {
   paperIdeas: PaperIdea[] = [];
   loading = true;
   error: string | null = null;
   filterForm: FormGroup;
-  semesters: Semester[] = [];
-  activeSemester: Semester | null = null;
+  activeSemesterId: number | null = null;
   allKeyPoints: KeyPoint[] = [];
   searchSubject = new Subject<string>();
   
@@ -75,43 +68,39 @@ export class ProfessorPaperIdeasComponent implements OnInit {
   ) {
     this.filterForm = this.fb.group({
       titleSearch: [''],
-      keyPointIds: [[]],
-      semesterId: ['']
+      keyPointIds: [[]]
     });
   }
   
   ngOnInit(): void {
-    console.log('Professor Paper Ideas Component initialized');
-    const currentUser = this.currentUserService.getUser();
-    console.log('Current user:', currentUser);
-    
-    this.loadSemesters();
+    console.log('Student Paper Ideas Component initialized');
+    this.loadActiveSemester();
     this.loadKeyPoints();
     this.setupSearchSubscription();
-    this.loadPaperIdeas();
   }
   
-  loadSemesters(): void {
+  loadActiveSemester(): void {
     this.activeSemesterService.getAllSemesters().subscribe({
       next: (semesters: any[]) => {
-        // Map the semesters to include id
-        this.semesters = semesters.map((sem, index) => ({
-          id: index + 1,
-          name: sem.name,
-          active: sem.active
-        }));
+        // Find the active semester
+        const activeSemester = semesters.find(s => s.active);
         
-        this.activeSemester = this.semesters.find(s => s.active) || null;
-        
-        if (this.activeSemester) {
-          this.filterForm.patchValue({
-            semesterId: this.activeSemester.id.toString()
-          });
-          this.onFilterChange(); // Trigger initial load with active semester
+        if (activeSemester) {
+          // Map the semester to include id (assuming the index + 1 is the id)
+          const semesterIndex = semesters.indexOf(activeSemester);
+          this.activeSemesterId = semesterIndex + 1;
+          
+          // Load paper ideas for the active semester
+          this.loadPaperIdeas();
+        } else {
+          this.error = 'No active semester found. Please contact an administrator.';
+          this.loading = false;
         }
       },
       error: (err) => {
-        console.error('Error loading semesters:', err);
+        console.error('Error loading active semester:', err);
+        this.error = 'Failed to load active semester. Please try again later.';
+        this.loading = false;
       }
     });
   }
@@ -134,7 +123,7 @@ export class ProfessorPaperIdeasComponent implements OnInit {
       distinctUntilChanged(),
       switchMap(searchTerm => {
         this.loading = true;
-        return this.paperIdeasService.getProfessorPaperIdeas(this.getFilters());
+        return this.paperIdeasService.getAllPaperIdeas(this.getFilters());
       })
     ).subscribe({
       next: (ideas) => {
@@ -177,7 +166,7 @@ export class ProfessorPaperIdeasComponent implements OnInit {
     this.loading = true;
     this.error = null;
     
-    this.paperIdeasService.getProfessorPaperIdeas(this.getFilters()).subscribe({
+    this.paperIdeasService.getAllPaperIdeas(this.getFilters()).subscribe({
       next: (ideas) => {
         console.log('Paper ideas loaded successfully:', ideas);
         this.paperIdeas = ideas;
@@ -185,7 +174,7 @@ export class ProfessorPaperIdeasComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error loading paper ideas:', err);
-        this.error = 'Failed to load your paper ideas. Please try again later.';
+        this.error = 'Failed to load paper ideas. Please try again later.';
         this.loading = false;
       }
     });
@@ -196,16 +185,17 @@ export class ProfessorPaperIdeasComponent implements OnInit {
     return {
       titleSearch: formValue.titleSearch,
       keyPointIds: formValue.keyPointIds,
-      semesterId: formValue.semesterId ? parseInt(formValue.semesterId) : undefined
+      semesterId: this.activeSemesterId || undefined,
+      activeSemesterOnly: true
     };
   }
   
   loadPaperIdeas(): void {
     this.loading = true;
     this.error = null;
-    console.log('Loading paper ideas...');
+    console.log('Loading paper ideas for active semester...');
     
-    this.paperIdeasService.getProfessorPaperIdeas(this.getFilters()).subscribe({
+    this.paperIdeasService.getAllPaperIdeas(this.getFilters()).subscribe({
       next: (ideas) => {
         console.log('Paper ideas loaded successfully:', ideas);
         this.paperIdeas = ideas;
@@ -213,7 +203,7 @@ export class ProfessorPaperIdeasComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error loading paper ideas:', err);
-        this.error = 'Failed to load your paper ideas. Please try again later.';
+        this.error = 'Failed to load paper ideas. Please try again later.';
         this.loading = false;
       },
       complete: () => {
