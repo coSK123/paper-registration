@@ -1,7 +1,7 @@
-<div class="professor-paper-ideas-container">
+<div class="student-paper-ideas-container">
   <div class="heading">
-    <h1>My Paper Ideas</h1>
-    <p>View and manage papers you have submitted</p>
+    <h1>Available Paper Ideas</h1>
+    <p>Browse paper ideas for the current semester</p>
   </div>
   
   <!-- Filter Section -->
@@ -22,15 +22,6 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        
-        <mat-form-field appearance="outline" class="filter-field">
-          <mat-label>Semester</mat-label>
-          <mat-select formControlName="semesterId">
-            <mat-option *ngFor="let semester of semesters" [value]="semester.id">
-              {{ semester.name }} {{ semester.active ? '(Active)' : '' }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
       </div>
     </form>
   </div>
@@ -39,7 +30,7 @@
     <!-- Loading state -->
     <div *ngIf="loading" class="loading-container">
       <mat-icon class="loading-icon">sync</mat-icon>
-      <p>Loading your paper ideas...</p>
+      <p>Loading paper ideas...</p>
     </div>
     
     <!-- Error state -->
@@ -54,10 +45,7 @@
     <!-- Empty state -->
     <div *ngIf="!loading && !error && paperIdeas.length === 0" class="empty-container">
       <mat-icon class="empty-icon">note_add</mat-icon>
-      <p>You haven't submitted any paper ideas yet.</p>
-      <button mat-raised-button color="primary" [routerLink]="['/d/dashboard']">
-        <mat-icon>add</mat-icon> Create Paper Idea
-      </button>
+      <p>No paper ideas are available for the current semester.</p>
     </div>
     
     <!-- Paper Ideas List -->
@@ -68,6 +56,7 @@
           <mat-card-subtitle>
             <div class="metadata">
               <span><mat-icon>person</mat-icon> {{ idea.creator }}</span>
+              <span><mat-icon>group</mat-icon> Group Size: {{ idea.groupSize }}</span>
               <span><mat-icon>calendar_today</mat-icon> {{ idea.createdAt | date }}</span>
             </div>
           </mat-card-subtitle>

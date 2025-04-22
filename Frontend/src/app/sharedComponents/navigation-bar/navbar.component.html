@@ -25,6 +25,18 @@
         </a>
       }
       
+      <!-- Student Navigation Links -->
+      @if (isStudent) {
+        <a mat-list-item routerLink="/s/dashboard">
+          <mat-icon>dashboard</mat-icon>
+          <span class="nav-link-text">Dashboard</span>
+        </a>
+        <a mat-list-item routerLink="/s/paper-ideas">
+          <mat-icon>school</mat-icon>
+          <span class="nav-link-text">Available Paper Ideas</span>
+        </a>
+      }
+      
       <!-- Common Navigation Links -->
       <a mat-list-item routerLink="/frontpage">
         <mat-icon>home</mat-icon>

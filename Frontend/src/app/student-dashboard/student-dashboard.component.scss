@@ -1,0 +1,79 @@
+.student-dashboard-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  
+  .welcome-section {
+    margin-bottom: 32px;
+    
+    h1 {
+      font-size: 28px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: #333;
+    }
+    
+    p {
+      font-size: 16px;
+      color: #666;
+      margin: 0;
+    }
+  }
+  
+  .actions-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+    
+    .action-card {
+      transition: transform 0.2s, box-shadow 0.2s;
+      
+      &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      }
+      
+      mat-card-header {
+        margin-bottom: 16px;
+        
+        mat-icon {
+          font-size: 36px;
+          width: 36px;
+          height: 36px;
+          color: #1976d2;
+        }
+        
+        mat-card-title {
+          font-size: 20px;
+          font-weight: 500;
+          margin-bottom: 4px;
+        }
+        
+        mat-card-subtitle {
+          font-size: 14px;
+          color: #666;
+        }
+      }
+      
+      mat-card-content {
+        p {
+          font-size: 14px;
+          color: #333;
+          margin-bottom: 16px;
+        }
+      }
+      
+      mat-card-actions {
+        padding: 8px 16px;
+        
+        button {
+          width: 100%;
+          
+          mat-icon {
+            margin-right: 8px;
+          }
+        }
+      }
+    }
+  }
+} 
